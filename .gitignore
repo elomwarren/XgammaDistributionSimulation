@@ -1,0 +1,5 @@
+# ignore plots folder
+figure/
+
+# ignore files
+XgammaDistributionSimulation_admin.*
