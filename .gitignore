@@ -1,5 +1,9 @@
 # ignore plots folder
 figure/
 
+# ignore Rproject file
+ADMIN.Rproj
+
+
 # ignore files
 XgammaDistributionSimulation_admin.*
