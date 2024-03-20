@@ -1,36 +1,20 @@
----
-title: "XGamma Distribution Simulation Project"
-author: ""
-date: ""
-output: 
-  pdf_document:
-    latex_engine: xelatex
-mainfont: "Times New Roman"
-monofont: "Courier New"
-fontsize: 11pt
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 
 # Simulation Studies for Xgamma distribution
 
-```{r, message = FALSE, echo = FALSE}
 # library(optimx) # advanced version of optim
 # library(xtable)
 # library(tidyr) # presentation of data
 # library(dplyr) # data manipulation
 # library(MASS) # fitdistr
 pacman::p_load(tidyr, dplyr, MASS, optimx, xtable)
-```
+
 
 
 ## Generating Observations from the Xgamma distribution
 
-Secondary function to choose which value to pick
-```{r}
+# Secondary function to choose which value to pick
+
 # "CHOOSE" = function(u, x, y, thres)
 # {
 #   if (u <= thres)
@@ -42,11 +26,11 @@ Secondary function to choose which value to pick
 #     return(y)
 #   }
 # }
-```
+
 
 
 ### Function to generate random XGamma observations
-```{r}
+
 "rxgamma" = function(n, Theta)
 {
   UNIF = runif(n = n, min = 0, max = 1)
@@ -69,11 +53,11 @@ Secondary function to choose which value to pick
   return(Obs)
 }
 
-```
 
 
-Setting up sample sizes and parameter values
-```{r}
+
+# Setting up sample sizes and parameter values
+
 # Sample sizes
 n_values = c(20, 40, 100)
 # Parameter values
@@ -83,11 +67,11 @@ Theta_values = c(0.1, 0.5, 1.0, 1.5, 3, 6)
 size_param_combos = expand.grid(n = n_values, Theta = Theta_values)
 
 size_param_combos
-```
+
 
 
 ### Generate Xgamma observations for all combinations of sample size and parameter Theta
-```{r}
+
 
 list_Data = lapply(
   1:nrow(size_param_combos), 
@@ -108,11 +92,11 @@ combination_names = paste("n", size_param_combos$n,
 
 names(list_Data) = combination_names
 
-```
 
 
-HISTOGRAMS of Data
-```{r}
+
+# HISTOGRAMS of Data
+
 # HIST = lapply(1:length(list_Data),
 #               function(i)
 #               {
@@ -127,10 +111,10 @@ HISTOGRAMS of Data
 #      xlab = paste("Observations of Data", 
 #                   names(list_Data)[1]), main = "")
 
-```
 
-DENSITY Graph of Data
-```{r}
+
+# DENSITY Graph of Data
+
 # PLOT DENSITY
 
 # DENSITY = lapply(
@@ -155,24 +139,24 @@ DENSITY_n20 = lapply(
   }
 )
 
-```
+
 
 
 ## Probability density function pdf of the Xgamma distribution
 
 
 ### Function for pdf of Xgamma
-```{r}
+
 # x > 0, Theta > 0
 "den_xgamma" = function(Theta, x)
 {
   (Theta^2 / (1 + Theta))*(1 + (Theta/2)*(x^2))*(exp(-(Theta*x)))
 }
-```
 
 
-Graph pdf of Xgamma(Theta) for selected values of Theta
-```{r}
+
+# Graph pdf of Xgamma(Theta) for selected values of Theta
+
 # Define the range of x values
 x_values = seq(0, 10, length.out = 1000)
 
@@ -197,12 +181,12 @@ legend("topright",
        lty = 1:4, lwd = 2, bty = "n")
 
 
-```
+
 
 
 ## Log-Likelihood Function for Xgamma
 
-```{r}
+
 "loglik_Xgamma" = function(Theta, x)
 {
   n = length(x)
@@ -211,12 +195,12 @@ legend("topright",
   
   return(-loglik) 
 }
-```
+
 
 
 ## Finding Maximum Likelihood Estimator MLE Theta.Hat of Theta
 
-```{r}
+
 # vec_Theta.Hat = lapply(
 #   1:length(list_Data),
 #   function(i)
@@ -230,10 +214,10 @@ legend("topright",
 #     error = function(e)rep(NA))
 #   }
 # )
-```
 
-Try and Error on optim function to find MLE
-```{r}
+
+# Try and Error on optim function to find MLE
+
 vec_Theta.Hat = sapply(
   1:length(list_Data),
   function(i)
@@ -247,17 +231,17 @@ vec_Theta.Hat = sapply(
           )
   }
 )
-```
 
-```{r}
+
+
 # vec_Theta.Hat
 # # Parameter value
 # vec_Theta.Hat[[1]]
-```
+
 
 
 ### MSE and Bias function (Secondary function)
-```{r}
+
 "Bias.MSE" = function(Theta.hat, Theta)
 {
   Bias = mean(Theta.hat - Theta)
@@ -267,13 +251,13 @@ vec_Theta.Hat = sapply(
   # tab = round(data.frame(Bias = Bias, MSE = MSE), 5)
   return(tab)
 }
-```
+
 
 ## Monte Carlo Simulation function for Xgamma
-Generates Average Bias and MSE of the estimator Theta.hat
+# Generates Average Bias and MSE of the estimator Theta.hat
 
 
-```{r}
+
 "simple.Sim.xgamma" = function(N, n, Theta)
 {
   # Generate Xgamma observations
@@ -309,18 +293,18 @@ Generates Average Bias and MSE of the estimator Theta.hat
 
   return(tab)
 }
-```
 
-Testing Simulation function
-```{r}
+
+# Testing Simulation function
+
 N = 10000
 n = 20
 Theta = 0.1
 simple.Sim.xgamma(N=N, n=n, Theta = Theta)
 
-```
 
-```{r}
+
+
 # Simulation for n = 20
 N = 10000
 n = 20
@@ -329,17 +313,17 @@ Bias_MSE_mat = data.frame(
            function(Theta)
              simple.Sim.xgamma(N=N, n=n, Theta = Theta))))
 
-```
+
 
 ### Calling simulation function for selected values of n and Theta
-```{r}
+
 n.Theta = expand.grid(Theta = Theta_values, n = n_values)
 N = rep(10000, length(n.Theta))
-```
+
 
 
 ### Simulation function for all values of n and Theta
-```{r}
+
 "Sim.xgamma" = function(N, n, Theta)
 {
   Bias.MSE_matrix = data.frame(
@@ -349,12 +333,12 @@ N = rep(10000, length(n.Theta))
 
   return(Bias.MSE_matrix)
 }
-```
+
 
 ## Monte Carlo Simulation function for exponential
 
-Simulation function for exponential distribution
-```{r}
+# Simulation function for exponential distribution
+
 "simple.Sim.exp" = function(N, n, Theta)
 {
   # Generate random data from exponential distribution
@@ -374,18 +358,18 @@ Simulation function for exponential distribution
   
   return(tab)
 }
-```
 
-Testing exponential distribution simulation function
-```{r}
+
+# Testing exponential distribution simulation function
+
 N = 10000
 n = 20
 Theta = 0.1
 simple.Sim.exp(N=N, n=n, Theta = Theta)
-```
+
 
 ### Main simulation function for exponential
-```{r}
+
 "Sim.exp" = function(N, n, Theta)
 {
   Bias.MSE_matrix = data.frame(
@@ -395,13 +379,13 @@ simple.Sim.exp(N=N, n=n, Theta = Theta)
 
   return(Bias.MSE_matrix)
 }
-```
+
 
 
 ## Simulations results - Bias and MSE 
 
-For Xgamma
-```{r}
+# For Xgamma
+
 Bias.MSE.xgamma = Sim.xgamma(N, n.Theta$n, n.Theta$Theta)
 
 Bias.MSE.xgamma.df = data.frame(
@@ -417,10 +401,10 @@ Sim.Bias.MSE.xgamma = Bias.MSE.xgamma.df %>%
               names_vary = "slowest")
 
 
-```
 
-For Exponential
-```{r}
+
+# For Exponential
+
 Bias.MSE.exp = Sim.exp(N, n.Theta$n, n.Theta$Theta)
 
 Bias.MSE.exp.df = data.frame(
@@ -436,15 +420,15 @@ Sim.Bias.MSE.exp = Bias.MSE.exp.df %>%
               names_vary = "slowest")
 
 
-```
+
 
 
 ## Presenting Simulations results Xgamma and Exponential
-```{r, echo = FALSE}
+
 knitr::kable(Sim.Bias.MSE.xgamma, 
              caption = "Average bias and MSE of the MLE for Xgamma")
 
 knitr::kable(Sim.Bias.MSE.exp, 
              caption = "Average bias and 
              MSE of the MLE for Exponential")
-```
+

@@ -3,7 +3,11 @@ figure/
 
 # ignore Rproject file
 ADMIN.Rproj
+
+# Hidden folder
 .Rproj.user/
 
 # ignore files
 XgammaDistributionSimulation_admin.*
+.Rhistory
+
