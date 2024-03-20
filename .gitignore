@@ -3,7 +3,7 @@ figure/
 
 # ignore Rproject file
 ADMIN.Rproj
-.Rproj.user
+.Rproj.user/
 
 # ignore files
 XgammaDistributionSimulation_admin.*
