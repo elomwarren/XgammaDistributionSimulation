@@ -9,5 +9,5 @@ ADMIN.Rproj
 
 # ignore files
 XgammaDistributionSimulation_admin.*
-.Rhistory
+.*
 
