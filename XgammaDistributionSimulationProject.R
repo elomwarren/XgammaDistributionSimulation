@@ -193,4 +193,6 @@ size_param_combos
 
 # Presenting simulation results
 
-# sim.res 
+sim.res = mapply(sim.xgamma.exp, R, size_param_combos$n, size_param_combos$rate, SIMPLIFY = "array")
+dimnames(sim.res)[[3]] = paste("n_", size_param_combos$n, "Theta_", size_param_combos$rate, sep="")
+sim.res
