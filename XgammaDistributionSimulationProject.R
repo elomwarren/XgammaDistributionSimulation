@@ -1,6 +1,7 @@
 # Simulation Studies for Xgamma distribution
 
-
+# Setting seeds 
+set.seed(9811) 
 #_____________________________________________________________________________
 
 # Loading Packages
